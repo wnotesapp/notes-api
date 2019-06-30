@@ -1,14 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const dbConfig = require('./config/database.config.js');
-const mongoose = require('mongoose');
 
 const app = express();
 
-require('./app/routes/note.routes.js')(app);
-
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+const dbConfig = require('./config/database.config.js');
+const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
@@ -24,6 +23,8 @@ mongoose.connect(dbConfig.url, {
 app.get('/', (req, res) => {
   res.json({"message": "Welcome"});
 });
+
+require('./app/routes/note.routes.js')(app);
 
 app.listen(3001, () => {
   console.log("Server is listening on port 3001");
